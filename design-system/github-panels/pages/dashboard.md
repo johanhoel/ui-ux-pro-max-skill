@@ -1,7 +1,7 @@
 # Dashboard Page Overrides
 
 > **PROJECT:** GitHub Panels
-> **Generated:** 2026-10-30 23:14:13
+> **Generated:** 2026-10-31 01:09:50
 > **Page Type:** Dashboard / Data View
 
 > ⚠️ **IMPORTANT:** Rules in this file **override** the Master file (`design-system/MASTER.md`).
@@ -15,7 +15,7 @@
 
 - **Max Width:** 1400px or full-width
 - **Grid:** 12-column grid for data flexibility
-- **Sections:** Hero (product + live preview or status) > Key metrics/indicators > How it works > CTA (Start trial / Contact)
+- **Sections:** Hero (Video/Mission) > Solutions by Industry > Solutions by Role > Client Logos > Contact Sales
 
 ### Spacing Overrides
 
@@ -27,11 +27,31 @@
 
 ### Color Overrides
 
-- **Strategy:** Dark or neutral. Status colors (green/amber/red). Data-dense but scannable.
+- **Strategy:** Corporate: Navy/Grey. High integrity. Conservative accents.
 
 ### Component Overrides
 
 - No overrides — use Master component specs
+
+### Visual Mockup — Page Layout
+
+```
+  ┌─────────────────────────────────────────────────────────────┐
+  │ ┌──────────┐                                              │
+  │ │ SIDEBAR   │  Main Dashboard Area                        │
+  │ │ Navigation│  ┌─────────────────────────────────────┐    │
+  │ │ (240px)   │  │ Header: [Search] [Notifications]     │    │
+  │ │           │  ├─────────────────────────────────────┤    │
+  │ │           │  │ KPI Cards Row                         │    │
+  │ │           │  │ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐│    │
+  │ │           │  │ │KPI 1 │ │KPI 2 │ │KPI 3 │ │KPI 4 ││    │
+  │ │           │  │ └──────┘ └──────┘ └──────┘ └──────┘│    │
+  │ │           │  ├─────────────────────────────────────┤    │
+  │ │           │  │ Charts & Data Tables                  │    │
+  │ │           │  └─────────────────────────────────────┘    │
+  │ └──────────┘                                              │
+  └─────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -44,4 +64,4 @@
 ## Recommendations
 
 - Effects: Hover tooltips, chart zoom on click, row highlighting on hover, smooth filter animations, data loading spinners
-- CTA Placement: Primary CTA in nav + After metrics
+- CTA Placement: Contact Sales (Primary) + Login (Secondary)

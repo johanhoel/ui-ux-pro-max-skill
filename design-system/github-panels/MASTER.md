@@ -7,8 +7,9 @@
 ---
 
 **Project:** GitHub Panels
-**Generated:** 2026-10-30 23:13:43
+**Generated:** 2026-10-31 01:09:43
 **Category:** Open Source Project Landing
+**Design Dials:** Variance 6/10 (Balanced / Modern) | Motion 5/10 (Standard) | Density 7/10 (Standard)
 
 ---
 
@@ -39,17 +40,19 @@
 
 ### Typography
 
-- **Heading Font:** JetBrains Mono
-- **Body Font:** IBM Plex Sans
-- **Mood:** code, developer, technical, precise, functional, hacker
-- **Google Fonts:** [JetBrains Mono + IBM Plex Sans](https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap)
+- **Heading Font:** Poppins
+- **Body Font:** Open Sans
+- **Mood:** modern, professional, clean, corporate, friendly, approachable
+- **Google Fonts:** [Poppins + Open Sans](https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap)
 
 **CSS Import:**
 ```css
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 ```
 
 ### Spacing Variables
+
+*Density: 7/10 — Standard*
 
 | Token | Value | Usage |
 |-------|-------|-------|
@@ -179,6 +182,101 @@
 - **Conversion Strategy:** Deep CTA placement. For CTA label text, verify at least 4.5:1 against the button fill; use 7:1 only when the product explicitly targets AAA normal-text contrast. Keep focus and component boundaries independently visible. Disable hero parallax under reduced motion and render its static final state.
 - **CTA Placement:** Hero (sticky) + Bottom
 - **Section Order:** Hero with headline/image > Value prop > Key features (3-5) > CTA section > Footer
+
+### Visual Mockup — Color Palette
+
+```
+  ┌─────────────────────────────────────────────────────────────┐
+  │ COLOR SWATCHES                                              │
+  ├─────────────────────────────────────────────────────────────┤
+  │ Primary          #0F172A
+  │ On Primary       #FFFFFF
+  │ Secondary        #1E293B
+  │ On Secondary     #FFFFFF
+  │ Accent/CTA       #A16207
+  │ Background       #020617
+  │ Card             #0E1223
+  │ Muted            #1A1E2F
+  │ Border           #334155
+  │ Destructive      #DC2626
+  └─────────────────────────────────────────────────────────────┘
+```
+
+### Visual Mockup — Page Layout Wireframe
+
+```
+  ┌─────────────────────────────────────────────────────────────┐
+  │ ┌───────────────────────────────────────────────────────┐  │
+  │ │                    NAV BAR                            │  │
+  │ │  [Logo]    [Nav1] [Nav2] [Nav3]          [CTA Button]│  │
+  │ ├───────────────────────────────────────────────────────┤  │
+  │ │                                                     │  │
+  │ │              HERO SECTION                           │  │
+  │ │         Headline + Subheadline                      │  │
+  │ │               [Primary CTA]                         │  │
+  │ │                                                     │  │
+  │ ├───────────────────────────────────────────────────────┤  │
+  │ │              FEATURES GRID                            │  │
+  │ │  ┌──────────┐  ┌──────────┐  ┌──────────┐          │  │
+  │ │  │ Feature1 │  │ Feature2 │  │ Feature3 │          │  │
+  │ │  │ [icon]   │  │ [icon]   │  │ [icon]   │          │  │
+  │ │  └──────────┘  └──────────┘  └──────────┘          │  │
+  │ ├───────────────────────────────────────────────────────┤  │
+  │ │              FINAL CTA SECTION                        │  │
+  │ │         Ready to get started?                         │  │
+  │ │               [Primary CTA]                           │  │
+  │ ├───────────────────────────────────────────────────────┤  │
+  │ └───────────────────────────────────────────────────────┘  │
+  └─────────────────────────────────────────────────────────────┘
+```
+
+### Visual Mockup — Component Placement Guide
+
+```
+  ┌─────────────────────────────────────────────────────────────┐
+  │ COMPONENT PLACEMENT                                         │
+  ├─────────────────────────────────────────────────────────────┤
+  │                                                             │
+  │  ┌─────────────────────────────────────────────────────┐   │
+  │  │ NAV: [Logo] [Nav...]              [CTA Button]      │   │
+  │  ├─────────────────────────────────────────────────────┤   │
+  │  │ HERO (full-width, centered):                         │   │
+  │  │   Headline (H1)                                      │   │
+  │  │   Subheadline                                        │   │
+  │  │   [Primary CTA] [Secondary CTA]                      │   │
+  │  ├─────────────────────────────────────────────────────┤   │
+  │  │ FEATURES (3-column grid):                            │   │
+  │  │   [Icon] Title + Description    × 3                  │   │
+  │  ├─────────────────────────────────────────────────────┤   │
+  │  │ SOCIAL PROOF (testimonial cards):                    │   │
+  │  │   [Photo] Quote - Name, Role                      │   │
+  │  ├─────────────────────────────────────────────────────┤   │
+  │  │ PRICING (3-tier cards):                              │   │
+  │  │   [Basic] [Pro ★] [Enterprise]                       │   │
+  │  ├─────────────────────────────────────────────────────┤   │
+  │  │ FINAL CTA (centered):                                │   │
+  │  │   Headline + [Primary CTA]                            │   │
+  │  ├─────────────────────────────────────────────────────┤   │
+  │  │ FOOTER:                                              │   │
+  │  │ [Links] © Company                                             │   │
+  └─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Motion
+
+**Stagger List** (Standard) — Trigger: load or scroll | Duration: 300-450ms | Easing: `back.out(1.4)`
+
+```js
+gsap.from('.grid-item', { opacity: 0, scale: 0.92, y: 16, duration: 0.4, stagger: { each: 0.06, from: 'start', grid: 'auto' }, ease: 'back.out(1.4)' });
+```
+
+**Framework notes:** grid: 'auto' lets GSAP infer rows/columns from a CSS grid layout for a natural wave stagger; Use matchMedia('(prefers-reduced-motion: reduce)') to skip non-essential motion and render the final state immediately
+
+- ✅ Combine with from: 'center' for a bento-grid layout to draw the eye inward first
+- ❌ Don't use back.out on dense data tables; the overshoot reads as sloppy on informational UI
+- ⚡ Group DOM writes; avoid interleaving layout reads (getBoundingClientRect) between staggered tweens
 
 ---
 

@@ -1,0 +1,9 @@
+{
+  "name": "GitHub Panels Design Tokens",
+  "version": "1.0.0",
+  "description": "Exported from UI/UX Pro Max v2.1",
+  "exported_at": "2026-10-31T00:00:00Z",
+  "figma_tokens": {},
+  "css_variables": "/* UI/UX Pro Max Design Tokens */\n/* Generated automatically - do not edit manually */\n\n:root {\n\n  /* Spacing Tokens */\n  --space-xs: 4px;\n  --space-sm: 8px;\n  --space-md: 16px;\n  --space-lg: 24px;\n  --space-xl: 32px;\n  --space-2xl: 48px;\n  --space-3xl: 64px;\n\n  /* Shadow Tokens */\n  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);\n  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);\n  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);\n  --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);\n}",
+  "tailwind_config": "# No colors configured"
+}

@@ -1,0 +1,19 @@
+{
+  "project": "GitHub Panels",
+  "audited_at": "2026-10-31T00:00:00Z",
+  "passed": true,
+  "summary": "2 checks run, 0 issue(s) found",
+  "checks": [
+    {
+      "check": "Heading font (Poppins)",
+      "status": "PASS",
+      "detail": "Font family specified for headings"
+    },
+    {
+      "check": "Body font (Open Sans)",
+      "status": "PASS",
+      "detail": "Font family specified for body text"
+    }
+  ],
+  "issues": []
+}
