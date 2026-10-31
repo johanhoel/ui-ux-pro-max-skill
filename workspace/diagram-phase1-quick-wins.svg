@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="950" height="700" fill="#0f172a" rx="16"/>
+
+  <text x="475" y="48" text-anchor="middle" font-size="22" font-weight="700" fill="#f8fafc">Phase 1 Quick Wins - Week 1-2</text>
+  <text x="475" y="72" text-anchor="middle" font-size="13" fill="#94a3b8">High impact, low effort improvements to implement first</text>
+
+  <!-- Task 1 -->
+  <rect x="30" y="100" width="890" height="160" rx="12" fill="#1e293b"/>
+  <circle cx="65" cy="140" r="16" fill="#10b981"/>
+  <text x="65" y="145" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+
+  <text x="95" y="130" font-size="16" font-weight="700" fill="#f8fafc">Fix Empty Status Column in styles.csv</text>
+  <text x="95" y="152" font-size="12" fill="#94a3b8">Impact: HIGH | Effort: LOW (1-2 hours)</text>
+
+  <rect x="95" y="165" width="800" height="28" rx="6" fill="#0f172a"/>
+  <text x="110" y="183" font-size="11" fill="#e2e8f0">Step 1: Cross-reference catalog-summary.json and data-provenance.json to determine active/deprecated status</text>
+
+  <rect x="95" y="197" width="800" height="28" rx="6" fill="#0f172a"/>
+  <text x="110" y="215" font-size="11" fill="#e2e8f0">Step 2: Populate Status column (active/deprecated/supplemental) for all 88 style entries</text>
+
+  <rect x="95" y="229" width="800" height="28" rx="6" fill="#0f172a"/>
+  <text x="110" y="247" font-size="11" fill="#e2e8f0">Step 3: Update validate_data.py to check for empty Status values</text>
+
+  <!-- Task 2 -->
+  <rect x="30" y="280" width="890" height="160" rx="12" fill="#1e293b"/>
+  <circle cx="65" cy="320" r="16" fill="#10b981"/>
+  <text x="65" y="325" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">2</text>
+
+  <text x="95" y="310" font-size="16" font-weight="700" fill="#f8fafc">Add Missing Stack Coverage (SvelteKit, SolidJS, Qwik)</text>
+  <text x="95" y="332" font-size="12" fill="#94a3b8">Impact: MEDIUM | Effort: LOW (2-3 hours)</text>
+
+  <rect x="95" y="345" width="800" height="28" rx="6" fill="#0f172a"/>
+  <text x="110" y="363" font-size="11" fill="#e2e8f0">Step 1: Create stacks/sveltekit.csv following the pattern from stacks/svelte.csv</text>
+
+  <rect x="95" y="377" width="800" height="28" rx="6" fill="#0f172a"/>
+  <text x="110" y="395" font-size="11" fill="#e2e8f0">Step 2: Create stacks/solidjs.csv and stacks/qwik.csv with framework-specific UX guidance</text>
+
+  <rect x="95" y="409" width="800" height="28" rx="6" fill="#0f172a"/>
+  <text x="110" y="427" font-size="11" fill="#e2e8f0">Step 3: Update AVAILABLE_STACKS in core.py to include new stacks</text>
+
+  <!-- Task 3 -->
+  <rect x="30" y="460" width="890" height="160" rx="12" fill="#1e293b"/>
+  <circle cx="65" cy="500" r="16" fill="#f59e0b"/>
+  <text x="65" y="505" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">3</text>
+
+  <text x="95" y="490" font-size="16" font-weight="700" fill="#f8fafc">Expand Product Types with Emerging Categories</text>
+  <text x="95" y="512" font-size="12" fill="#94a3b8">Impact: MEDIUM | Effort: MEDIUM (4-6 hours)</text>
+
+  <rect x="95" y="525" width="800" height="28" rx="6" fill="#0f172a"/>
+  <text x="110" y="543" font-size="11" fill="#e2e8f0">New categories: AI Agent Tools, Spatial Computing (Vision Pro), Voice-First Interfaces, AR Shopping</text>
+
+  <rect x="95" y="557" width="800" height="28" rx="6" fill="#0f172a"/>
+  <text x="110" y="575" font-size="11" fill="#e2e8f0">Digital Health Platforms, Creator Economy Tools, Autonomous Systems</text>
+
+  <rect x="95" y="589" width="800" height="28" rx="6" fill="#0f172a"/>
+  <text x="110" y="607" font-size="11" fill="#e2e8f0">Each new type needs: product entry, color palette, style recommendation, landing pattern</text>
+
+</svg>

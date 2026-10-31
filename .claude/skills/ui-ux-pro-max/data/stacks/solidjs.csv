@@ -1,0 +1,184 @@
+No,Category,Guideline,Description,Do,Don't,Code Good,Code Bad,Severity,Docs URL,Applies To,Status,Verified At
+1,Reactivity,"Use createSignal for state, createMemo for computed values",SolidJS uses fine-grained reactivity with signals; each signal creates its own dependency tree,Use createSignal() for mutable state and createMemo() for derived computations,Use React-style useState/useEffect patterns that cause unnecessary re-renders,"const [count, setCount] = createSignal(0);
+const doubled = createMemo(() => count() * 2);","// React-style pattern
+const [count, setCount] = useState(0);
+effect(() => {
+  console.log(count());
+});",High,https://docs.solidjs.com/references/primitive-apis/create-signal,solidjs,active,2026-10-31
+2,Components,Use JSX with Solid's createRoot for mounting,SolidJS uses a compile-time JSX transform that creates fine-grained DOM updates without virtual DOM diffing,Write components as functions returning JSX; use props via the props parameter destructuring,Use class-based components or render functions without JSX,"// Component function
+function Counter(props) {
+  const [count, setCount] = createSignal(0);
+  return (
+    <button onClick={() => setCount(c => c + 1)}>
+      Count: {count()}
+    </button>
+  );
+}","// Render function without JSX
+function Counter(props) {
+  return h('button', {
+    onClick: () => setCount(c => c + 1)
+  }, 'Count:', count());
+}",High,https://docs.solidjs.com/concepts/introduction-to-solid,solidjs,active,2026-10-31
+3,Routing,Use solid-start or @solidjs/router for file-based routing,@solidjs/router provides React Router-like routing with Solid's fine-grained reactivity; solid-start adds SSR capabilities,Define routes in a router component; use <Route> for path matching and <Navigate> for redirects,Use window.location for navigation instead of the router,"<Routes>
+  <Route path='/' component={Home} />
+  <Route path='/dashboard' component={Dashboard} />
+  <Route path='/login' component={Login} />
+</Routes>","// Manual routing
+window.location.href = '/dashboard';",High,https://docs.solidjs.com/solid-start/reference/routing,solidjs,active,2026-10-31
+4,State Management,Use createContext for component tree state; stores for global state,Solid provides createContext/useContext for prop drilling avoidance and createStore for complex state trees,"Use context for shared UI state (theme, auth); use createStore for nested data structures",Pass every piece of state through props from root to leaf components,"// Context creation
+const ThemeContext = createContext();
+
+// Provider component
+function ThemeProvider(props) {
+  const [theme, setTheme] = createSignal('light');
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {props.children}
+    </ThemeContext.Provider>
+  );
+}","// Prop drilling everywhere
+<Header theme={theme} setTheme={setTheme} />
+<Main theme={theme} setTheme={setTheme} />",High,https://docs.solidjs.com/concepts/context,solidjs,active,2026-10-31
+5,Data Fetching,Use createResource for reactive data fetching with loading states,createResource returns a read function and loading/error signals; automatically tracks dependencies,Use createResource for API calls; access .loading and .error signals for UI feedback,Fetch in onMount without tracking loading state in the template,"// Reactive data fetching
+const [user, { refetch }] = createResource(
+  userId,
+  (id) => fetch(`/api/users/${id}`).then(r => r.json())
+);
+
+// Template usage
+{#if user.loading}
+  <Spinner />
+{:else if user.error}
+  <Error message={user.error} />
+{:else}
+  <UserProfile user={user()} />
+{/if}","// Manual fetch in onMount
+onMount(async () => {
+  const res = await fetch('/api/data');
+  setData(await res.json());
+});",High,https://docs.solidjs.com/references/primitive-apis/create-resource,solidjs,active,2026-10-31
+6,Performance,Leverage fine-grained reactivity for zero unnecessary updates,SolidJS only updates the exact DOM nodes whose signals change; no virtual DOM diffing overhead,Keep signal scope narrow; create separate signals for independent UI sections,Wrap everything in a single signal causing full component re-renders on any change,"// Narrow signal scope
+const [title, setTitle] = createSignal('Dashboard');
+const [items, setItems] = createSignal([]);
+const [loading, setLoading] = createSignal(false);
+// Each changes independently","// Single state object
+const [state, setState] = createSignal({
+  title: 'Dashboard',
+  items: [],
+  loading: false,
+  error: null
+});",High,https://docs.solidjs.com/concepts/overview#performance,solidjs,active,2026-10-31
+7,Accessibility,Use native HTML elements with Solid's signal bindings for a11y,"Solid's fine-grained updates naturally keep aria attributes in sync; use native <button>, <nav>, semantic elements",Bind aria attributes to signals; use role and tabindex where native elements aren't suitable,Use div/span as interactive elements without keyboard handlers or aria labels,"<button
+  aria-label='Toggle menu'
+  aria-expanded={isOpen()}
+  onClick={() => setIsOpen(!isOpen())}
+>
+  <MenuIcon />
+</button>
+
+<nav aria-label='Main navigation'>
+  {navItems().map(item => (
+    <a href={item.href}>{item.label}</a>
+  ))}
+</nav>","<!-- Non-semantic clickable -->
+<div class='menu-btn' onClick={toggle}>Menu</div>",High,https://www.w3.org/WAI/ARIA/apg/,solidjs,active,2026-10-31
+8,Styling,Use CSS modules or Tailwind with Solid's classList binding,Solid supports dynamic class names via the class directive; works seamlessly with Tailwind CSS and CSS modules,Use classList for conditional classes; use CSS custom properties for theming,Inline styles with JavaScript objects instead of CSS classes,"// Conditional classes
+<div class:list={{
+  'bg-primary': isActive(),
+  'text-muted': !isActive()
+}}>
+  Content
+</div>
+
+// CSS variables for theming
+<div style={{ '--theme-color': themeColor() }}>","// Inline styles everywhere
+<div style='background: red; padding: 10px;'>Content</div>",Medium,https://docs.solidjs.com/reference/control-directives/class,solidjs,active,2026-10-31
+9,Animations,Use @solid-primitives/motion or CSS transitions with signals,Solid primitives library provides motion utilities; combine with CSS transitions for smooth animations,Use transition classes toggled by signal changes; use requestAnimationFrame for complex animations,Manually manipulate DOM styles without using CSS transitions,"// Toggle animation class
+const [animating, setAnimating] = createSignal(false);
+
+// In template:
+<div class:list={{
+  'animate-slide-in': animating()
+}}>
+  Content
+</div>","// Manual style manipulation
+onMount(() => {
+  el.style.transform = 'translateY(0)';
+});",Medium,https://docs.solidjs.com/concepts/introduction-to-solid#animations,solidjs,active,2026-10-31
+10,Forms & Validation,Use createFormAction with solid-start for server validation,Solid-start provides form actions similar to SvelteKit; validate on the server and display errors reactively,Use createSignal for each field; show inline errors bound to validation state,Validate only on submit without inline feedback,"// Form fields
+const [name, setName] = createSignal('');
+const [errors, setErrors] = createSignal({});
+
+// Inline validation
+const nameValid = createMemo(() => {
+  const v = name();
+  return v.length >= 2 ? '' : 'Name must be at least 2 characters';
+});","// No inline validation
+<form onSubmit={handleSubmit}>
+  <input value={name()} onInput={(e) => setName(e.target.value)} />
+  <button>Submit</button>
+</form>",High,https://docs.solidjs.com/solid-start/reference/actions,solidjs,active,2026-10-31
+11,SEO & Meta,Use solid-meta or document head manipulation for SEO tags,Solid doesn't have a built-in meta tag system; use the solid-meta package or manipulate document.head directly in SSR context,Define meta tags in layout components; use <svelte:head> equivalent via solid-meta,Hardcode meta tags in each page without inheritance from layouts,"// Using solid-meta
+import { Title, Meta } from 'solid-meta';
+
+function Dashboard() {
+  return (
+    <>
+      <Title>Dashboard - My App</Title>
+      <Meta name='description' content='Analytics dashboard' />
+      {/* page content */}
+    </>
+  );
+}","// No meta tags
+function Dashboard() {
+  return <div>Dashboard</div>;
+}",Medium,https://www.npmjs.com/package/solid-meta,solidjs,active,2026-10-31
+12,Dark Mode,Use CSS custom properties with a signal-driven theme toggle,Toggle dark mode by updating a root-level signal; use CSS variables for all color values,Store theme in localStorage and sync via a context provider at the app root,Define separate light/dark components without shared CSS variables,"// Theme store
+const [theme, setTheme] = createSignal('light');
+
+// On mount: restore from localStorage
+onMount(() => {
+  const saved = localStorage.getItem('theme');
+  if (saved) setTheme(saved);
+});
+
+// Toggle function
+function toggleTheme() {
+  const next = theme() === 'light' ? 'dark' : 'light';
+  setTheme(next);
+  localStorage.setItem('theme', next);
+}","// No persistence
+function toggleTheme() {
+  // Theme changes but resets on reload
+}",Medium,https://docs.solidjs.com/concepts/introduction-to-solid,solidjs,active,2026-10-31
+13,Image Optimization,Use native <img> with width/height and loading='lazy',Solid doesn't include a built-in image component; use the native img element with proper attributes for performance,Set explicit width/height to prevent CLS; use loading='lazy' for below-fold images; prefer WebP format,Load all images eagerly without size constraints causing layout shift,"<img
+  src='/hero.webp'
+  alt='Hero image'
+  width={1200}
+  height={630}
+  loading='eager'
+/>
+
+<img
+  src='/thumbnail.jpg'
+  alt='Thumbnail'
+  width={400}
+  height={300}
+  loading='lazy'
+/>","<!-- No dimensions, no lazy loading -->
+<img src='/image.jpg' />",High,https://web.dev/articles/optimize-cls,solidjs,active,2026-10-31
+14,Navigation,Use <A> component for client-side navigation; Link for styled links,@solidjs/router provides <A> and <Link> components that handle SPA transitions without full page reloads,Use <A href='/path'> for internal navigation; use window.location only for external URLs,Use window.location.href for every navigation causing full page reloads,"<A href='/dashboard' class='nav-link'>Dashboard</A>
+<A href='/settings' class='nav-link'>Settings</A>","// Full page reload
+<a href='/dashboard'>Dashboard</a>",Medium,https://docs.solidjs.com/solid-start/reference/routing,solidjs,active,2026-10-31
+15,Error Boundaries,Use ErrorBoundary component for graceful error handling,@solidjs/router provides <ErrorBoundary> to catch rendering errors and show fallback UI without crashing the app,Wrap route components in ErrorBoundary; provide meaningful error messages and recovery options,Let unhandled errors crash the entire application with a white screen,"<ErrorBoundary fallback={(err, reset) => (
+  <div>
+    <h2>Something went wrong</h2>
+    <p>{String(err)}</p>
+    <button onClick={reset}>Try again</button>
+  </div>
+)}>
+  {children}
+</ErrorBoundary>","// No error boundary
+function App() {
+  return <Routes />;
+}",High,https://docs.solidjs.com/reference/components/error-boundary,solidjs,active,2026-10-31

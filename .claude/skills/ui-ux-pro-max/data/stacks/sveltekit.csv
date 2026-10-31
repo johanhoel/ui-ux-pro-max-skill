@@ -1,0 +1,167 @@
+No,Category,Guideline,Description,Do,Don't,Code Good,Code Bad,Severity,Docs URL,Applies To,Status,Verified At
+1,Routing,Use file-based routing with layouts,SvelteKit uses src/routes for automatic routing with +layout.svelte for shared layouts,Define layout hierarchy in +layout.svelte files; use +page.svelte for route content,Create separate components for each page without layout nesting,"<!-- src/routes/+layout.svelte -->
+<slot />
+
+<!-- src/routes/dashboard/+page.svelte -->
+<h1>Dashboard</h1>","<!-- pages/Dashboard.vue style flat structure -->
+<script>
+export default {}
+</script>
+<Dashboard />",High,https://kit.svelte.dev/docs/routing,sveltekit,active,2026-10-31
+2,Data Loading,Use load functions for server-side data fetching,Load functions run on the server and return data to client components via props,Use +page.server.ts or +layout.server.ts for data loading; spread data into component props,Fetch data inside onMount in every component making duplicate requests,"<!-- src/routes/+page.server.ts -->
+export const load = async ({ fetch }) => {
+  const res = await fetch('/api/data');
+  return { data: await res.json() };
+};
+
+<!-- +page.svelte -->
+<script>
+export let data;
+</script>","<!-- Client-side only approach -->
+<script>
+import { onMount } from 'svelte';
+onMount(async () => {
+  const res = await fetch('/api/data');
+});
+</script>",High,https://kit.svelte.dev/docs/load,sveltekit,active,2026-10-31
+3,State Management,Use $state for local state; stores for shared state,"SvelteKit leverages Svelte 5 runes ($state, $derived) and writable/readable stores for cross-component communication",Use $state for component-local state; use writable stores in a separate module for app-wide state,Create complex context providers or use external libraries like Redux,"const count = $state(0);
+
+// For shared state: src/lib/store.ts
+import { writable } from 'svelte/store';
+export const userStore = writable(null);","const count = 0;
+onMount(() => {
+  count = fetchData();
+});",High,https://kit.svelte.dev/docs/load#Form-actions,sveltekit,active,2026-10-31
+4,Forms & Actions,Use form actions for server-side validation and mutations,SvelteKit form actions handle POST/PUT/PATCH/DELETE on the server with automatic revalidation,Define +page.server.ts with actions; use formmethod and action props in forms,Handle form submission entirely client-side with fetch and manual state updates,"<!-- +page.server.ts -->
+export const actions = {
+  default: async ({ request }) => {
+    const data = await request.formData();
+    return { success: true };
+  }
+};
+
+<!-- +page.svelte -->
+<form method='POST'>
+  <input name='email' />
+  <button type='submit'>Submit</button>
+</form>","<!-- Client-side form handling -->
+<script>
+let email = '';
+async function submit() {
+  await fetch('/api/submit', { method: 'POST', body: JSON.stringify({ email }) });
+}
+</script>",High,https://kit.svelte.dev/docs/form-actions,sveltekit,active,2026-10-31
+5,Styling,Use CSS modules or Tailwind with PostCSS,"SvelteKit supports CSS modules (.module.css), global styles, and Tailwind CSS via the official adapter",Enable Tailwind in svelte.config.js; use CSS modules for component-scoped styles,Import large CSS frameworks globally without tree-shaking,"// svelte.config.js
+import adapter from '@sveltejs/adapter-auto';
+export default {
+  kit: { adapter },
+  preprocess: [sveltePreprocess({ postcss: true })]
+};","<!-- Large unscoped CSS import -->
+<style>
+@import 'tailwind.css';
+</style>",Medium,https://kit.svelte.dev/docs/css,sveltekit,active,2026-10-31
+6,Accessibility,Use semantic HTML + Svelte bindings for a11y,Svelte's reactivity naturally keeps aria attributes in sync with state; use bind:value for form controls,"Bind aria attributes to reactive state; use native <button>, <nav>, <main> elements",Use div/span as interactive elements without role/keyboard handlers,"<button aria-label='Close' onclick={close}>
+  <span aria-hidden='true'>x</span>
+</button>
+
+<input bind:value={email} aria-describedby='email-help' />","<!-- Non-semantic clickable element -->
+<div class='btn' onclick={handleClick}>Click me</div>",High,https://svelte.dev/docs/svelte/svelte-component,sveltekit,active,2026-10-31
+7,Performance,Leverage server-side rendering for fast initial load,SvelteKit SSR renders pages on the server; use prerender for static pages and ssr:false for client-only routes,"Prerender static marketing pages; use ssr: false only when necessary (e.g., browser APIs)","Render everything client-side, losing SEO and initial paint benefits","<!-- +page.svelte -->
+<script>
+export let data;
+</script>
+
+<!-- src/routes/blog/+layout.server.ts -->
+export const prerender = true;","<!-- Client-only route -->
+<!-- src/routes/dashboard/+page.server.ts -->
+export const ssr = false;",High,https://kit.svelte.dev/docs/page-options,sveltekit,active,2026-10-31
+8,Navigation,Use <a> for navigation; navigate() for SPA transitions,SvelteKit intercepts anchor clicks for client-side navigation; use goto() or navigate() programmatically,Use native <a href> links where possible; use goto('/path') for programmatic navigation,Use window.location.href for every navigation causing full page reloads,"<script>
+import { goto } from '$app/navigation';
+function goToDashboard() {
+  goto('/dashboard');
+}
+</script>","<!-- Full page reload -->
+<a href='/dashboard'>Dashboard</a> (without SvelteKit intercept)",Medium,https://kit.svelte.dev/docs/modules#svelte-app-navigation,sveltekit,active,2026-10-31
+9,Error Handling,Use +error.svelte for route-level error pages,SvelteKit renders +error.svelte when a load function throws; customize with status codes,Create +error.svelte in each layout level; use setError() in form actions,Catch errors only at the top level without per-route handling,"<!-- src/routes/+error.svelte -->
+<script>
+export let data;
+</script>
+
+<h1>{data.status}: {data.error}</h1>","<!-- No error page defined -->
+<!-- User sees white screen on load failure -->",High,https://kit.svelte.dev/docs/error-handling,sveltekit,active,2026-10-31
+10,Responsive Design,Use CSS media queries with Svelte's bind:clientWidth,Svelte can bind to window.innerWidth for responsive breakpoints; combine with CSS container queries,Bind client width for JS-driven responsiveness; use CSS @media for layout changes,Hardcode pixel widths in JavaScript without responsive breakpoints,"<script>
+let width = 0;
+$effect(() => {
+  console.log('Width:', width);
+});
+</script>
+
+<div bind:clientWidth={width}>Content</div>","<!-- Hardcoded breakpoint -->
+{#if window.innerWidth > 768}
+  <DesktopNav />
+{:else}
+  <MobileNav />
+{/if}",Medium,https://svelte.dev/docs/svelte/bind-client-width,sveltekit,active,2026-10-31
+11,Animations,Use Svelte's built-in transitions and animations,"Svelte has first-class transition support with flip, fade, slide, scale, draw, and crossfade",Use {#key} blocks for animated list reordering; use transition directives on elements,Manually animate DOM changes without using Svelte's transition system,"<script>
+import { fly, fade } from 'svelte/transition';
+</script>
+
+<div transition:fly={{ y: 20, duration: 300 }}>
+  Content
+</div>","<!-- Manual CSS animation -->
+<div class='animate-fade'>Content</div>
+<style>
+.animate-fade { opacity: 1; }
+</style>",Medium,https://svelte.dev/docs/svelte/transition,sveltekit,active,2026-10-31
+12,SEO & Meta,Use +layout.server.ts for shared meta tags,SvelteKit's load functions can set page metadata; use the $app/environment head tag for SEO,Define meta tags in layout load functions; use <svelte:head> for per-page overrides,Hardcode meta tags in each page component without inheritance,"<!-- +layout.server.ts -->
+export const load = async () => {
+  return {
+    title: 'My App',
+    description: 'A SvelteKit application'
+  };
+};
+
+<!-- +page.svelte -->
+<svelte:head>
+  <title>Dashboard</title>
+  <meta name='description' content='Analytics dashboard' />
+</svelte:head>","<!-- Meta in each page without layout sharing -->
+<script>
+export let data;
+</script>",Medium,https://kit.svelte.dev/docs/modules#svelte-app-head,sveltekit,active,2026-10-31
+13,Environment Variables,Use import.meta.env for type-safe env access,SvelteKit exposes environment variables via $env/dynamic/private and $env/static/public,Prefix public vars with PUBLIC_ in .env; use $env/static/public for compile-time injection,Access process.env directly without SvelteKit's env module,"<script>
+import { PUBLIC_API_URL } from '$env/static/public';
+</script>
+
+<!-- Server-side -->
+<script>
+import { DATABASE_URL } from '$env/static/private';
+</script>","<!-- Raw environment access -->
+const url = process.env.API_URL;",Medium,https://kit.svelte.dev/docs/modules#svelte-env-static-public,sveltekit,active,2026-10-31
+14,Image Optimization,Use <img> with loading='lazy' and width/height attributes,SvelteKit doesn't include a built-in image component; use native img or integrate with adapters like Cloudflare,Always set explicit width/height to prevent CLS; use loading='lazy' for below-fold images,Load all images eagerly without size constraints causing layout shift,"<img
+  src='/hero.webp'
+  alt='Hero image'
+  width={1200}
+  height={630}
+  loading='eager'
+/>
+
+<img
+  src='/thumbnail.jpg'
+  alt='Thumbnail'
+  width={400}
+  height={300}
+  loading='lazy'
+/>","<!-- No dimensions, no lazy loading -->
+<img src='/image.jpg' />",High,https://web.dev/articles/optimize-cls,sveltekit,active,2026-10-31
+15,Dark Mode,Use CSS custom properties with a data-theme attribute,Toggle dark mode by setting data-theme='dark' on the root element; use Svelte stores for state management,Store theme preference in localStorage; sync across tabs using storage event listener,Define light and dark colors separately without CSS variables,"<script>
+import { writable } from 'svelte/store';
+
+export const theme = writable('light');
+$theme.subscribe(value => {
+  document.documentElement.dataset.theme = value;
+});
+</script>","// No persistence
+function toggleTheme() {
+  // Theme changes but doesn't persist
+}",Medium,https://svelte.dev/docs/svelte/store,sveltekit,active,2026-10-31

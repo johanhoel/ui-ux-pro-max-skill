@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="950" height="700" fill="#0f172a" rx="16"/>
+
+  <text x="475" y="48" text-anchor="middle" font-size="22" font-weight="700" fill="#f8fafc">New Feature: Design Token Export</text>
+  <text x="475" y="72" text-anchor="middle" font-size="13" fill="#94a3b8">One command, ready-to-use code in any format</text>
+
+  <!-- Input -->
+  <rect x="300" y="100" width="350" height="50" rx="12" fill="#3b82f6"/>
+  <text x="475" y="130" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Design System Query -&gt; Color Palette</text>
+
+  <!-- Output Formats -->
+  <rect x="30" y="200" width="890" height="50" rx="12" fill="#1e293b"/>
+  <text x="475" y="230" text-anchor="middle" font-size="14" font-weight="600" fill="#fbbf24">--output-format: css | tailwind | design-tokens-json | figma-vars</text>
+
+  <!-- CSS Output -->
+  <rect x="30" y="270" width="430" height="180" rx="12" fill="#1e293b"/>
+  <text x="245" y="300" text-anchor="middle" font-size="14" font-weight="600" fill="#60a5fa">CSS Variables</text>
+
+  css_lines = [
+    "--color-primary: #2563EB;",
+    "--color-on-primary: #FFFFFF;",
+    "--color-secondary: #3B82F6;",
+    "--color-accent: #EA580C;",
+    "--color-background: #F8FAFC;",
+    "--color-foreground: #1E293B;",
+  ]
+
+y = 315
+for line in css_lines:
+    bg = '<rect x="50" y="' + str(y) + '" width="390" height="22" rx="4" fill="#0f172a"/>'
+    txt = '<text x="65" y="' + str(y+15) + '" font-size="11" fill="#e2e8f0">' + line + '</text>'
+    print(bg + '
+' + txt)
+    y += 26
+
+# Tailwind Output
+tw_box = '<rect x="490" y="270" width="430" height="180" rx="12" fill="#1e293b"/>'
+print(tw_box)
+tw_title = '<text x="705" y="300" text-anchor="middle" font-size="14" font-weight="600" fill="#a78bfa">Tailwind Config</text>'
+print(tw_title)
+
+tw_lines = [
+    'primary: {',
+    '  DEFAULT: "#2563EB",',
+    '  foreground: "#FFFFFF"',
+    '},',
+    'accent: {',
+    '  DEFAULT: "#EA580C",',
+]
+
+y = 315
+for line in tw_lines:
+    bg = '<rect x="510" y="' + str(y) + '" width="390" height="22" rx="4" fill="#0f172a"/>'
+    txt = '<text x="525" y="' + str(y+15) + '" font-size="11" fill="#e2e8f0">' + line + '</text>'
+    print(bg + '
+' + txt)
+    y += 26
+
+# JSON Output
+json_box = '<rect x="30" y="470" width="430" height="200" rx="12" fill="#1e293b"/>'
+print(json_box)
+json_title = '<text x="245" y="500" text-anchor="middle" font-size="14" font-weight="600" fill="#34d399">Design Tokens JSON</text>'
+print(json_title)
+
+json_lines = [
+    '{',
+    '  "color": {',
+    '    "primary": { "value": "#2563EB" },',
+    '    "accent": { "value": "#EA580C" }',
+    '  },',
+    '  "semantic": {',
+]
+
+y = 515
+for line in json_lines:
+    bg = '<rect x="50" y="' + str(y) + '" width="390" height="22" rx="4" fill="#0f172a"/>'
+    txt = '<text x="65" y="' + str(y+15) + '" font-size="11" fill="#e2e8f0">' + line + '</text>'
+    print(bg + '
+' + txt)
+    y += 26
+
+# Figma Output
+figma_box = '<rect x="490" y="470" width="430" height="200" rx="12" fill="#1e293b"/>'
+print(figma_box)
+figma_title = '<text x="705" y="500" text-anchor="middle" font-size="14" font-weight="600" fill="#fbbf24">Figma Variables</text>'
+print(figma_title)
+
+figma_lines = [
+    '{',
+    '  "name": "Design System",',
+    '  "variables": {',
+    '    "color-primary": "#2563EB",',
+    '    "accent": "#EA580C",',
+    '    "background": "#F8FAFC"',
+]
+
+y = 515
+for line in figma_lines:
+    bg = '<rect x="510" y="' + str(y) + '" width="390" height="22" rx="4" fill="#0f172a"/>'
+    txt = '<text x="525" y="' + str(y+15) + '" font-size="11" fill="#e2e8f0">' + line + '</text>'
+    print(bg + '
+' + txt)
+    y += 26
+
+</svg>

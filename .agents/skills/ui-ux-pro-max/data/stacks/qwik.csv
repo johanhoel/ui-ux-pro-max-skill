@@ -1,0 +1,216 @@
+No,Category,Guideline,Description,Do,Don't,Code Good,Code Bad,Severity,Docs URL,Applies To,Status,Verified At
+1,Resumability,Use server components by default; hydrate only what's needed,Qwik's resumability means the server serializes the component state and restores it on the client without full hydration,Write components as functions that return JSX; use useSignal for interactive state that needs hydration,Hydrate entire pages when only a small part is interactive,"// Server component (no hydration needed)
+export const ServerComponent = () => {
+  return <div>Static content</div>;
+};
+
+// Client component (needs interactivity)
+import { component$ } from '@builder.io/qwik';
+export const InteractiveComponent = component$(() => {
+  const count = useSignal(0);
+  return (
+    <button onClick$={() => count.value++}>
+      Count: {count}
+    </button>
+  );
+});","// Full page hydration
+// All components get hydrated even if static",High,https://qwik.dev/docs/components/,qwik,active,2026-10-31
+2,Routing,Use file-based routing with qwik-city for SSR and code splitting,Qwik-City provides Next.js-like file-based routing with automatic route-based code splitting and server functions,Define routes in src/routes; use $url() for type-safe navigation; use useLocation() for current route info,Manually manage routes without the file-based convention,"// src/routes/dashboard/index.tsx
+export default function DashboardPage() {
+  return <Dashboard />;
+}
+
+// Type-safe navigation
+import { $url } from '@builder.io/qwik';
+const dashboardUrl = $url('/dashboard');","<!-- Manual route management -->
+function navigate(path) {
+  window.location.href = path;
+}",High,https://qwik.dev/docs/getting-started/#routing,qwik,active,2026-10-31
+3,State Management,Use useSignal for local state; useStore for reactive objects,Qwik provides useSignal for simple values and useStore for deeply reactive objects that serialize across boundaries,Use useSignal for primitive state; useStore when you need nested reactivity or serialization,Use global state libraries like Redux without needing Qwik's built-in store,"// Local signal
+const count = useSignal(0);
+
+// Reactive store (serializes across boundaries)
+const state = useStore({
+  user: { name: '', email: '' },
+  settings: { theme: 'light', lang: 'en' }
+});","// Non-reactive object
+let state = {
+  user: { name: '', email: '' }
+};",High,https://qwik.dev/api/core/#usesignal,qwik,active,2026-10-31
+4,Data Fetching,Use useResource$ for lazy-loaded data with resumability,useResource$ creates a resource that can be serialized on the server and restored on the client without re-fetching,Use useResource$ for API calls; combine with useVisibleTask$ for client-only effects,Fetch all data in onMount causing hydration delays,"// Lazy loaded resource
+const data = useResource$<Data>(async () => {
+  const res = await fetch('/api/data');
+  return res.json();
+});
+
+// Template usage
+{#if data.value}
+  <Content data={data.value} />
+{:else}
+  <Spinner />
+{/if}","// Fetch in onMount
+onMounted(async () => {
+  const res = await fetch('/api/data');
+  setData(await res.json());
+});",High,https://qwik.dev/api/core/#useresource,qwik,active,2026-10-31
+5,Performance,Leverage lazy loading and code splitting by default,Qwik automatically splits code at every component; only loads what's needed when it's needed,Keep components small and focused; use component$() for interactive components that need hydration,Bundle all components together defeating Qwik's lazy loading benefits,"// Each component is a lazy-loaded chunk
+export const Header = component$(() => {
+  return <header>...</header>;
+});
+
+export const Sidebar = component$(() => {
+  return <aside>...</aside>;
+});
+// Only loaded when scrolled into view","// Large bundled component
+export default component$(() => {
+  // Everything in one file
+  return (
+    <>
+      <Header />
+      <Sidebar />
+      <MainContent />
+      <Footer />
+    </>
+  );
+});",High,https://qwik.dev/docs/performance/,qwik,active,2026-10-31
+6,Server Functions,Use defineResource$ for server-side data processing,Qwik allows defining server functions that run on the server and return serialized results to the client,Define server functions in src/routes/api/; call them from client components with $() syntax,Run expensive computations on the client instead of using server functions,"// Server function
+import { defineResource$ } from '@builder.io/qwik';
+
+export const processData = defineResource$(async (input) => {
+  // Runs on server
+  const result = await db.query(input);
+  return result;
+});
+
+// Client usage
+const result = useResource$(processData, [userInput]);","// Expensive client computation
+function compute() {
+  let total = 0;
+  for (let i = 0; i < 1000000; i++) {
+    total += Math.sin(i);
+  }
+  return total;
+}",High,https://qwik.dev/api/core/#defineresource,qwik,active,2026-10-31
+7,Accessibility,Use semantic HTML + Qwik's event handlers for a11y,Qwik uses $event$ syntax for event handlers; naturally keeps aria attributes in sync with state through signals,"Bind aria attributes to signals; use native <button>, <nav>, <main> elements with proper roles",Use div/span as interactive elements without keyboard handlers or aria labels,"<button
+  aria-label='Toggle menu'
+  aria-expanded={isOpen}
+  onClick$={() => setIsOpen(!isOpen)}
+>
+  <MenuIcon />
+</button>
+
+<nav aria-label='Main navigation'>
+  {navItems.map(item => (
+    <a href={item.href}>{item.label}</a>
+  ))}
+</nav>","<!-- Non-semantic clickable -->
+<div class='menu-btn' onClick$={toggle}>Menu</div>",High,https://www.w3.org/WAI/ARIA/apg/,qwik,active,2026-10-31
+8,Styling,Use CSS modules or Tailwind with Qwik's classList directive,Qwik supports dynamic class names via the class directive; works seamlessly with Tailwind CSS and CSS modules,Use classList for conditional classes; use CSS custom properties for theming across components,Inline styles with JavaScript objects instead of CSS classes,"// Conditional classes
+<div class:list={{
+  'bg-primary': isActive,
+  'text-muted': !isActive
+}}>
+  Content
+</div>","// Inline styles everywhere
+<div style='background: red; padding: 10px;'>Content</div>",Medium,https://qwik.dev/docs/styles/,qwik,active,2026-10-31
+9,Animations,Use Qwik's useVisibleTask$ for DOM-ready animations,useVisibleTask$ runs after the component is painted; ideal for measuring dimensions and triggering animations,Measure element dimensions in useVisibleTask$; use CSS transitions for smooth animations,Animate before the DOM is ready causing layout thrashing,"// Animation after paint
+import { useVisibleTask$ } from '@builder.io/qwik';
+
+useVisibleTask$(({ cleanup }) => {
+  const el = document.querySelector('.hero');
+  if (el) {
+    el.style.opacity = '0';
+    requestAnimationFrame(() => {
+      el.style.transition = 'opacity 0.5s ease';
+      el.style.opacity = '1';
+    });
+  }
+});","// Animate before paint
+onMounted(() => {
+  const el = document.querySelector('.hero');
+  el.style.transform = 'translateY(20px)';
+});",Medium,https://qwik.dev/api/core/#usevisibletask,qwik,active,2026-10-31
+10,Forms & Validation,Use useForm$ for type-safe form handling with server validation,"Qwik provides useForm$ hook that handles form submission, validation, and error display with server-side processing",Define form fields with useSignal; validate on submit and display errors inline,Validate only client-side without server verification,"// Form handling
+const form = useForm$<{ name: string; email: string }>();
+const [errors, setErrors] = useState({});
+
+// Server validation
+form.onSubmit$(async (values) => {
+  const res = await fetch('/api/validate', {
+    method: 'POST',
+    body: JSON.stringify(values)
+  });
+  const result = await res.json();
+  if (!result.valid) setErrors(result.errors);
+});","// No form hook
+function handleSubmit(e) {
+  e.preventDefault();
+  fetch('/api/validate', { method: 'POST' });
+}",High,https://qwik.dev/api/core/#useform,qwik,active,2026-10-31
+11,SEO & Meta,Use qwik-city's head management for SEO tags,Qwik-City provides built-in meta tag management through the useHead() hook and <head> component in route files,Define meta tags in layout routes; use useHead() for per-page overrides,Hardcode meta tags without inheritance from layouts,"// In route file
+import { useHead } from '@builder.io/qwik';
+
+export default function Page() {
+  useHead({
+    title: 'Dashboard - My App',
+    meta: [
+      { name: 'description', content: 'Analytics dashboard' }
+    ]
+  });
+  return <Dashboard />;
+}","// No meta tags
+export default function Page() {
+  return <Dashboard />;
+}",Medium,https://qwik.dev/docs/getting-started/#routing,qwik,active,2026-10-31
+12,Dark Mode,Use CSS custom properties with a signal-driven theme toggle,Toggle dark mode by updating a root-level signal; use CSS variables for all color values across the app,Store theme preference in localStorage and sync via a context provider at the app root,Define separate light/dark components without shared CSS variables,"// Theme store
+const [theme, setTheme] = useState('light');
+
+// On mount: restore from localStorage
+useVisibleTask$(() => {
+  const saved = localStorage.getItem('theme');
+  if (saved) setTheme(saved);
+});
+
+// Toggle function
+function toggleTheme() {
+  const next = theme === 'light' ? 'dark' : 'light';
+  setTheme(next);
+  localStorage.setItem('theme', next);
+}","// No persistence
+function toggleTheme() {
+  // Theme changes but resets on reload
+}",Medium,https://qwik.dev/docs/styles/,qwik,active,2026-10-31
+13,Image Optimization,Use <img> with width/height and loading='lazy',Qwik doesn't include a built-in image component; use the native img element with proper attributes for performance,Set explicit width/height to prevent CLS; use loading='lazy' for below-fold images; prefer WebP format,Load all images eagerly without size constraints causing layout shift,"<img
+  src='/hero.webp'
+  alt='Hero image'
+  width={1200}
+  height={630}
+  loading='eager'
+/>
+
+<img
+  src='/thumbnail.jpg'
+  alt='Thumbnail'
+  width={400}
+  height={300}
+  loading='lazy'
+/>","<!-- No dimensions, no lazy loading -->
+<img src='/image.jpg' />",High,https://web.dev/articles/optimize-cls,qwik,active,2026-10-31
+14,Navigation,Use Link component for client-side navigation; useNavigate$ for programmatic routing,Qwik provides <Link> for declarative navigation and useNavigate$() for programmatic route changes with automatic code splitting,Use <Link href='/path'> for internal navigation; use navigate$('/path') for conditional redirects,Use window.location.href for every navigation causing full page reloads,"<Link href='/dashboard' class='nav-link'>Dashboard</Link>
+<Link href='/settings' class='nav-link'>Settings</Link>
+
+// Programmatic navigation
+const navigate = useNavigate$();
+navigate('/dashboard');","// Full page reload
+<a href='/dashboard'>Dashboard</a>",Medium,https://qwik.dev/docs/getting-started/#routing,qwik,active,2026-10-31
+15,Error Boundaries,Use Error component for graceful error handling in routes,Qwik-City allows defining +error.tsx files at any route level to catch and display errors gracefully,Create +error.tsx in each layout level; use setError() in form actions,Let unhandled errors crash the entire application with a white screen,"// src/routes/+error.tsx
+export default function ErrorPage({ error }) {
+  return (
+    <div>
+      <h2>Something went wrong</h2>
+      <p>{String(error)}</p>
+      <a href='/'>Go home</a>
+    </div>
+  );
+}","// No error page defined
+// User sees white screen on load failure",High,https://qwik.dev/docs/getting-started/#routing,qwik,active,2026-10-31
