@@ -1,0 +1,22 @@
+{
+  "layout": {
+    "Max Width": "1200px",
+    "Layout": "2-column: order summary + payment form"
+  },
+  "spacing": {
+    "Content Density": "Medium - balance clarity with information density"
+  },
+  "wireframe": "+---------------------------------------+\n| NAV: [Logo] [Cart (3)]              |\n+---------------------------------------+\n| CHECKOUT (2-column layout):           |\n|  +--------------+  +-------------+   |\n|  | Order Summary|  | Payment     |   |\n|  | [Item list]  |  | [Form]      |   |\n|  +--------------+  +-------------+   |\n+---------------------------------------+\n| FOOTER: [Links] (c) Company           |\n+---------------------------------------+",
+  "components": [
+    "- Order summary with item thumbnails",
+    "- Address autocomplete form",
+    "- Credit card input with formatting",
+    "- Payment method selector (card, PayPal, etc.)"
+  ],
+  "recommendations": [
+    "Show trust badges near CTA button",
+    "Add guest checkout option",
+    "Include order confirmation animation",
+    "Save cart for 7 days via localStorage"
+  ]
+}

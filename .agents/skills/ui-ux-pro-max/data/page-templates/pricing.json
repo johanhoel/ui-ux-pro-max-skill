@@ -1,0 +1,22 @@
+{
+  "layout": {
+    "Max Width": "1200px",
+    "Layout": "3-column pricing cards"
+  },
+  "spacing": {
+    "Content Density": "Medium - clear comparison between tiers"
+  },
+  "wireframe": "+---------------------------------------+\n| NAV: [Logo] [Nav...]              |\n+---------------------------------------+\n| HERO: Headline + Subheadline          |\n|         [Primary CTA]                 |\n+---------------------------------------+\n| PRICING TIERS (3-column):             |\n|   +------+  +------+  +--------+      |\n|   |Basic |  | Pro  |  |Enterp.|      |\n|   +------+  +------+  +--------+      |\n+---------------------------------------+\n| FOOTER: [Links] (c) Company           |\n+---------------------------------------+",
+  "components": [
+    "- Monthly/annual toggle with savings badge",
+    "- Feature comparison table",
+    "- FAQ accordion section",
+    "- Testimonial cards near CTA"
+  ],
+  "recommendations": [
+    "Highlight recommended tier visually",
+    "Add money-back guarantee badge",
+    "Include enterprise contact form",
+    "Show usage-based pricing calculator for complex plans"
+  ]
+}

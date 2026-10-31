@@ -1,0 +1,22 @@
+{
+  "layout": {
+    "Max Width": "400px (centered)",
+    "Layout": "Single column, centered card"
+  },
+  "spacing": {
+    "Content Density": "Low - focus on clarity and trust"
+  },
+  "wireframe": "+---------------------------------------+\n|              AUTH PAGE                |\n|         [Logo / Brand]                |\n|         Headline: Welcome             |\n|    +-------------------------------+  |\n|    | Email/Username                |  |\n|    +-------------------------------+  |\n|    | Password                      |  |\n|    +-------------------------------+  |\n|    | [Primary CTA: Sign In]        |  |\n|    +-------------------------------+  |\n|         [Forgot?] | [Sign up]       |\n+---------------------------------------+",
+  "components": [
+    "- Email/username input with validation",
+    "- Password field with show/hide toggle",
+    "- Remember me checkbox",
+    "- Social login buttons (Google, GitHub)"
+  ],
+  "recommendations": [
+    "Add password strength indicator for sign-up",
+    "Include 2FA option after login",
+    "Show error messages inline below fields",
+    "Auto-focus first input field"
+  ]
+}

@@ -165,8 +165,9 @@ def format_output(result, full=False):
 
 
 def search_cross_domain(query, max_results=3):
-    """Search across multiple domains and aggregate results"""
-    # Auto-detect relevant domains based on query keywords
+    """Search across multiple domains and aggregate results with normalized scoring."""
+    from core import search
+    
     domain_keywords = {
         'style': ['design', 'aesthetic', 'visual', 'look', 'feel', 'theme'],
         'color': ['color', 'palette', 'hue', 'shade', 'tone', 'hex'],
@@ -187,7 +188,6 @@ def search_cross_domain(query, max_results=3):
                 detected_domains.add(domain)
                 break
     
-    # Always include style and product as base domains
     detected_domains.update(['style', 'product'])
     
     all_results = {}
@@ -202,12 +202,31 @@ def search_cross_domain(query, max_results=3):
         except Exception as e:
             pass
     
+    # Normalize BM25 scores across domains for fair ranking
+    normalized_results = {}
+    for domain, result in all_results.items():
+        if 'results' in result and result['results']:
+            max_bm25 = max(r.get('_bm25_score', 0) or r.get('score', 0) 
+                          for r in result['results'])
+            if max_bm25 > 0:
+                normalized_results[domain] = {
+                    'count': result['count'],
+                    'file': result['file'],
+                    'query': result['query'],
+                    'normalized_results': [
+                        {**r, '_normalized_score': (r.get('_bm25_score', 0) or r.get('score', 0)) / max_bm25}
+                        for r in result['results']
+                    ]
+                }
+    
     return {
         'query': query,
         'domains_searched': sorted(detected_domains),
         'total_hits': total_hits,
         'results_by_domain': all_results,
+        'normalized_results': normalized_results,
     }
+
 
 
 if __name__ == "__main__":

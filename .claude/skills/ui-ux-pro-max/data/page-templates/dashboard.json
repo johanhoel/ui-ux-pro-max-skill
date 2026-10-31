@@ -1,0 +1,22 @@
+{
+  "layout": {
+    "Max Width": "1400px",
+    "Grid": "12-column grid for data flexibility"
+  },
+  "spacing": {
+    "Content Density": "High - optimize for information display"
+  },
+  "wireframe": "+----------+                                              \n| SIDEBAR   |  Main Dashboard Area                        \n| Navigation|  +-------------------------------------+    \n| (240px)   |  | Header Bar: [Search] [User]          |    \n|           |  +-------------------------------------+    \n|           |  | Data Cards Grid                       |    \n|           |  | Charts & Tables                     |    \n|           |  +-------------------------------------+    \n+----------+                                              ",
+  "components": [
+    "- KPI cards with trend indicators (up/down arrows)",
+    "- Interactive charts (line, bar, area)",
+    "- Data table with sorting and filtering",
+    "- Date range picker for time-based data"
+  ],
+  "recommendations": [
+    "Use skeleton loaders while data loads",
+    "Add export button for data tables",
+    "Include refresh interval selector",
+    "Show last updated timestamp"
+  ]
+}

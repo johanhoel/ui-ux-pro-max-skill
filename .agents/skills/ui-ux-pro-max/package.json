@@ -1,0 +1,59 @@
+{
+  "name": "@ui-ux-pro-max/design-system",
+  "version": "2.1.0",
+  "description": "UI/UX Pro Max - Complete design system generator with BM25 search, WCAG validation, visual mockups, and Figma token export",
+  "keywords": [
+    "design-system",
+    "ui-ux",
+    "css-variables",
+    "color-palette",
+    "typography",
+    "accessibility",
+    "wcag",
+    "bm25-search",
+    "figma-tokens",
+    "design-tokens"
+  ],
+  "license": "MIT",
+  "author": "UI/UX Pro Max Team <https://github.com/johanhoel>",
+  "homepage": "https://github.com/johanhoel/ui-ux-pro-max-skill#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johanhoel/ui-ux-pro-max-skill.git"
+  },
+  "bugs": {
+    "url": "https://github.com/johanhoel/ui-ux-pro-max-skill/issues"
+  },
+  "main": "./scripts/core.py",
+  "bin": {
+    "ui-ux-pro-max": "./bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "data/",
+    "stacks/",
+    "references/",
+    "SKILL.md",
+    "README.md",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "python": ">=3.9"
+  },
+  "scripts": {
+    "start": "node bin/cli.js",
+    "search": "node bin/cli.js search",
+    "design-system": "node bin/cli.js design-system",
+    "validate": "python scripts/validate_data.py",
+    "test": "pytest scripts/tests/",
+    "audit": "node bin/cli.js audit",
+    "export-tokens": "node bin/cli.js export-tokens",
+    "prepublishOnly": "npm run validate && npm test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "pytest": "^8.0.0"
+  }
+}

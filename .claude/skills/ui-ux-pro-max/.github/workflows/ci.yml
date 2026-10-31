@@ -1,0 +1,97 @@
+name: UI/UX Pro Max CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  validate-data:
+    name: Validate Data Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install pytest
+      
+      - name: Run data validation
+        working-directory: .agents/skills/ui-ux-pro-max
+        run: |
+          python scripts/validate_data.py
+      
+      - name: Run tests
+        working-directory: .agents/skills/ui-ux-pro-max
+        run: |
+          pytest scripts/tests/ -v --tb=short
+
+  test-search:
+    name: Test Search Functionality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Run search tests
+        working-directory: .agents/skills/ui-ux-pro-max
+        run: |
+          pytest scripts/tests/test_core.py -v --tb=short
+
+  test-design-system:
+    name: Test Design System Generation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Run design system tests
+        working-directory: .agents/skills/ui-ux-pro-max
+        run: |
+          pytest scripts/tests/test_design_system_mode.py scripts/tests/test_design_system_stack.py -v --tb=short
+
+  test-style-taxonomy:
+    name: Test Style Taxonomy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Run style tests
+        working-directory: .agents/skills/ui-ux-pro-max
+        run: |
+          pytest scripts/tests/test_style_taxonomy.py -v --tb=short
+
+  cli-test:
+    name: Test CLI Wrapper
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Verify CLI help works
+        working-directory: .agents/skills/ui-ux-pro-max
+        run: |
+          node bin/cli.js --help

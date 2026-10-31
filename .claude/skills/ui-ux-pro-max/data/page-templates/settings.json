@@ -1,0 +1,22 @@
+{
+  "layout": {
+    "Max Width": "900px",
+    "Layout": "Left nav + content area"
+  },
+  "spacing": {
+    "Content Density": "Medium - organized sections"
+  },
+  "wireframe": "+---------------------------------------+\n| NAV: [Logo] [Nav...]              |\n+---------------------------------------+\n| SETTINGS (left nav + content):        |\n|  +------+  +---------------------+   |\n|  | Gen  |  | Profile             |   |\n|  | Sec  |  | [Avatar Upload]     |   |\n|  | Notif|  | [Name Input]        |   |\n|  | Bill |  | [Email Input]       |   |\n|  +------+  +---------------------+   |\n+---------------------------------------+\n| FOOTER: [Links] (c) Company           |\n+---------------------------------------+",
+  "components": [
+    "- Tabbed navigation for settings categories",
+    "- Toggle switches for preferences",
+    "- Save/Cancel action buttons",
+    "- Danger zone with delete account option"
+  ],
+  "recommendations": [
+    "Show unsaved changes indicator",
+    "Add confirmation dialogs for destructive actions",
+    "Include keyboard shortcuts reference",
+    "Support dark/light mode toggle in settings"
+  ]
+}
